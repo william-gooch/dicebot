@@ -1,0 +1,41 @@
+expr: set (REP INT)? // 4d6kh3r6
+set: roll (mod)* // 4d6kh3
+mod: add_sub | keep_drop // kh3+4
+add_sub: (ADD|SUB) INT // X+4
+keep_drop: (DROP|KEEP) (LOW|HIGH) INT // Xkh3
+roll: (INT)? dice // 4d6
+dice: DICE INT | RPAREN expr LPAREN // d6
+
+-----
+ADD: +
+SUB: -
+KEEP: k
+DROP: x
+LOW: l
+HIGH: h
+REP: r/R
+DICE: d/D
+INT: any integer
+
+example:
+4d6dl1r6
+expr
+set REP 6
+roll mod REP 6
+INT dice kd REP 6
+INT DICE INT DROP LOW INT REP 6
+4 DICE 6 DROP LOW 1 REP 6
+4d6dl1r6
+
+8(4d6xl1)xl2
+expr
+set
+roll mod
+INT dice keep_drop
+INT LPAREN expr RPAREN DROP LOW INT
+INT LPAREN set RPAREN DROP LOW INT
+INT LPAREN roll mod RPAREN DROP LOW INT
+INT LPAREN INT dice keep_drop RPAREN DROP LOW INT
+INT LPAREN INT DICE INT DROP LOW INT RPAREN DROP LOW INT
+8(4d6xl1)xl2
+roll 4d6xl1 8 times and drop lowest 2
